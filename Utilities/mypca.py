@@ -1,9 +1,10 @@
-package Utilities;
 import numpy as np
 
 class MyPCA(object):
     """A class to compute and work with Pricipal component analysis"""
 
+    def __init__(self):
+        pass
 
     def fit(self, data):
         """
@@ -64,3 +65,5 @@ class MyPCA(object):
             print("Something went wrong:")
             print("Is the transformed fitted?")
             print("Are the dimensions of the data correct?")
+
+
