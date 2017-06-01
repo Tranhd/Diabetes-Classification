@@ -55,7 +55,7 @@ class MyPCA(object):
             Of form (Number of Samples x Attributes)
         Returns
         -------
-        Y : numpy array
+        _ : numpy array
             The data projected onto the principal axes.
 
         """
@@ -66,4 +66,23 @@ class MyPCA(object):
             print("Is the transformed fitted?")
             print("Are the dimensions of the data correct?")
 
+    def inverse_transform(self, pca_data):
+        """
+        Inverts the principal components transform.
 
+        Parameters
+        ----------
+        data_pca : Pandas dataframe
+            Of form (Number of Samples x Attributes)
+        Returns
+        -------
+        _ : numpy array
+            The data projected back on the original attribute-space.
+
+        """
+        try:
+            return np.dot(pca_data, self.projmatrix.T) + pca_data.mean()
+        except:
+            print("Something went wrong:")
+            print("Is the transformed fitted?")
+            print("Are the dimensions of the data correct?")
