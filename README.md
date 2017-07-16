@@ -4,10 +4,10 @@
 Data exploration and machine learning classification on the Pima Indians Diabetes Data Set from UCI.
 
 ### 1.1 Problem
-The Pima indians (Akimel O?odham) of Arizona have the highest rate of diabetes of any population in the world. Hence we should be able by analysing data and using machine learning make predictive indications on how likely a person is to get diabetes.
+The Pima indians (Akimel Oodham) of Arizona have the highest rate of diabetes of any population in the world. Hence we should be able by analysing data and using machine learning make predictive indications on how likely a person is to get diabetes.
 
 ### 1.2 The data
-The Pima Indian diabetes database, donated by Vincent Sigillito, is a collection of medical diagnostic reports. The dataset is publicly available both at [UCI](https://archive.ics.uci.edu/ml/datasets/pima+indians+diabetes) and [Kaggle](https: //www.kaggle.com/uciml/pima-indians-diabetes-database).
+The Pima Indian diabetes database, donated by Vincent Sigillito, is a collection of medical diagnostic reports. The dataset is publicly available both at [UCI](https://archive.ics.uci.edu/ml/datasets/pima+indians+diabetes) and [Kaggle](https://www.kaggle.com/uciml/pima-indians-diabetes-database).
 
 ### 1.3 File structure
 ![alt text](/images/struct.png)
@@ -98,12 +98,12 @@ Before evaluating the model on the test set we train our model on the entire tra
 Evaluating our model on the test set without missing values gives an accuracy of 0.88 and AUC of 0.89. 
 ![alt text](/images/test_conf.png)
 
-## 4 Discussion
+## 4. Discussion
 I think that the best accuracy I’ve seen on this dataset was an optimized gradient boosting classifier with approximately 86%. On the other hand this classifier could handle missing values and used 20% of the data as an testing set. So an future project could be to by further looking in to bagging, construct something using both entropy and gini and that samples both the features and data with replacement making it prone to missing values.
 
 Also since dimensionality reduction clearly did not work out feature-construction might be something that could boost the predictive capability of an model.
 
-## 5 Conclusion
+## 5. Conclusion
 The model does classify the new test data with really good accuracy but do not have the interpretability that you might want or any sophisticated way to handle missing values.
 
 ## Author
