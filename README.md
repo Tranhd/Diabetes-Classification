@@ -51,16 +51,40 @@ To automate the work-flow the final model is incorporated into an pipeline that 
 #### 2.2.5 Test
 Finally we test the final model on the held out test-set.
 
-## 3 Result
+## 3. Result
 
 ### 3.1 The data
 Inspecting the data reveals some missing values (values that are physically impossible), labelled as 0’s. We replaced all of these with NaN place-holders instead. The distributions of the attributes are a mix of normal-looking, often with an positive skew, and exponential looking-distributions. The correlations reveal minor positive linear relationships and not anything unexpected.
-![](/images/Corr_matrix.png)
+![alt text](/images/Corr_matrix.png)
 
+#### 3.1.1 Principal component analysis
+As the explained variance ratio is inspected we note that most of the components will be needed to account for all the variance. Using two components a scatter plot of the data is viewed to see how well the classes is separated, not very good in a linear sense. 5 components is chosen, that will cover almost 100 percent of the variance.
+![alt text](/images/explained_variance.png)
 
+#### 3.1.2 Backward Attribute Elimination
+Both logistic regression and the 6-nearest neighbour classifier (euclidean distance) agrees on the importance of the attributes to some extent. The accuracy increase if we drop two or three attributes depending on the set, taking the union of these two subsets we get the new set: Glucose, Pregnancies, BMI, SkinThickness, Insulin and BloodPressure Hence we drop DiabetesPedi- greeFunction and Age.
 
+### 3.2 Models
+Evaluating the models using 18-fold cross validation and the three different versions of the dataset (Raw data, PCA data and BFE data) does not reveal any significantly better accuracy for any of the data sets, different models perform differently across the datasets. Logistic regression seems to be the best performing model.
+![alt text](/images/modelsvsdata.png)
 
+#### 3.2.1 Confusion Matrixes
+Almost all models predict the unseen validation worse than the 18-fold cross validation score revealed. The models that classifies the validation set significantly better is the decision trees. As we inspect the confusion matrix we note that most of the models have almost identical predictions when it comes to instances with true negative outcomes (Figure 4). Where they differ and where some of the the decision trees is superior is when we try to predict true positive outcomes. Many of the models are worse than random guessing. This could be the False positive paradox. Basically since the majority of the instances has outcome not diabetes our models will favour predicting not diabetes. This leads to another paradox, namely the accuracy paradox. Basically it means that because of the imbalance in outcomes predictive models with a given accuracy might have greater predictive capability than a model with higher accuracy. Hence we exchange accuracy as metric in favour of AUC - The area under the ROC (receiver operating characteristic) curve. The ROC curve is the true positive rate (TPR) against the false positive rate (FPR) at various thresholds/ranks for the instances. The area under the curve measures discrimination, the ability to correctly classify those with and without diabetes in our case.
 
+Evaluating our models using the validation set and AUC instead of accuracy the decision trees using all the data is superior.
+![alt text](/images/confusion.png)
+
+#### 3.2.2 Explore the model
+As familiar decision trees have high variance. As such we now look at the effect of increasing the maximum depth of the tree and at the same time inspecting the deviation of 100 trees at that depth. The maximum leaf nodes is fixed to avoid overfitting. The resulting plot does not imply any overfitting, by inspection the best model is the decision tree with entropy criterion however the gini trees seem to handle false positives better.
+![alt text](/images/xploredepth.png)
+
+#### 3.2.3 Optimizing the parameters
+By using a grid search the entire parameter space is explored with AUC as the metric to optimize and zero-one-loss as an tiebreaker. The best trees chosen usually have the same AUC score and zero-one-loss, most often 0.8875. Every time we run the parameter search another combination of parameters will be the best because of the intrinsic variance of decision trees, though most of the best trees performs well because of the natural low bias of decision trees. However reusing the best parameter combination yields different result every time we train a new tree because of the intrinsic variance, sometimes the predictions are really good and sometimes worse. Remember that the trees are tuned to the validation set and might, probably wont, generalize good to new data.
+
+There is some pattern to what sort of combinations work for the problem. For the entropy criterion trees the best performing ones the maximum depth is between 5 and 7, the maximum number of leaves between 22 and 26 and using balanced weighting for the classes. The balanced weighting adjust the weights for the classes inversely proportional to class frequencies, basically counteracting the false positive hypothesis paradox mentioned earlier. For the gini criterion trees the maximum depth is around 7, the maximum number of leaves varies a lot but tend to approach higher values (≈25) and using the proposed 1.105, 1.15 weighting for the classes.
+
+#### 3.2.4 Ensembles
+We could use an ensemble to decrease variance and try to make our model generalize well. Both Bootstrap aggregating and ran- dom forest is tried using the generally best decision tree: entropy, max_depth=5, max_leaf_nodes=22, and class_weight=’balanced’. It should theoretically provide the stability we need and reduce variance. Both the algorithms provide the decrease in variance but does instead introduce an substantial unacceptable bias. Looking back at when we compared entropy and gini criterion and looked at the effect of the depth and variance. Remember that the gini trees generally had few false positives while entropy trees had few false negatives. An viable hypothesis might be that the two complement each other, and because we in the ensembles above only use the one or the other they doesn’t improve our predictive capability.
 
 ## Author
 
