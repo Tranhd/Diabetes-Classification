@@ -85,6 +85,26 @@ There is some pattern to what sort of combinations work for the problem. For the
 
 #### 3.2.4 Ensembles
 We could use an ensemble to decrease variance and try to make our model generalize well. Both Bootstrap aggregating and ran- dom forest is tried using the generally best decision tree: entropy, max_depth=5, max_leaf_nodes=22, and class_weight=’balanced’. It should theoretically provide the stability we need and reduce variance. Both the algorithms provide the decrease in variance but does instead introduce an substantial unacceptable bias. Looking back at when we compared entropy and gini criterion and looked at the effect of the depth and variance. Remember that the gini trees generally had few false positives while entropy trees had few false negatives. An viable hypothesis might be that the two complement each other, and because we in the ensembles above only use the one or the other they doesn’t improve our predictive capability.
+![alt text](/images/bagging.png)
+![alt text](/images/randfor.png)
+
+#### 3.2.5 Final model: Hard Voting Classifier
+The voting classifier consists of 100 trees and a 5:4 ratio of entropy and gini trees since the gini trees showed less potential in the grid search. The classification is done using a majority vote rule. The parameters for the entropy tree is as above and for the gini tree max_depth=7, max_leaf_nodes=25, class_weight={0: 1.105, 1: 1.15}. This yields an amazing result, AUC of nearly 89 for the validation set and 93 for the training set. That’s not a gigantic difference and hopefully the constraints on the trees have prevented the model from overfitting on the training data.
+
+#### 3.2.6 Pipeline
+Before evaluating the model on the test set we train our model on the entire training dataset with some simple mean-imputing. We also put it into a pipeline to automate the workflow. The model is found in model.py.
+
+### 3.3 Test
+Evaluating our model on the test set without missing values gives an accuracy of 0.88 and AUC of 0.89. 
+![alt text](/images/test_conf.png)
+
+## 4 Discussion
+I think that the best accuracy I’ve seen on this dataset was an optimized gradient boosting classifier with approximately 86%. On the other hand this classifier could handle missing values and used 20% of the data as an testing set. So an future project could be to by further looking in to bagging, construct something using both entropy and gini and that samples both the features and data with replacement making it prone to missing values.
+
+Also since dimensionality reduction clearly did not work out feature-construction might be something that could boost the predictive capability of an model.
+
+## 5 Conclusion
+The model does classify the new test data with really good accuracy but do not have the interpretability that you might want or any sophisticated way to handle missing values.
 
 ## Author
 
