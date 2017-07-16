@@ -55,7 +55,7 @@ Finally we test the final model on the held out test-set.
 
 ### 3.1 The data
 Inspecting the data reveals some missing values (values that are physically impossible), labelled as 0’s. We replaced all of these with NaN place-holders instead. The distributions of the attributes are a mix of normal-looking, often with an positive skew, and exponential looking-distributions. The correlations reveal minor positive linear relationships and not anything unexpected.
-![alt text](/images/Corr_matrix-eps-converted-to.pdf)
+![](/images/Corr_matrix-eps-converted-to.pdf)
 
 
 
