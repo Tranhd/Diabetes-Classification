@@ -108,4 +108,5 @@ The model does classify the new test data with really good accuracy but do not h
 
 ## Author
 
-* **Ludwig Tranheden**
+* **Tranhd**
+
